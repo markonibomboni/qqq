@@ -1,0 +1,36 @@
+.zzz-extensions .zzz-boxed-content {
+	max-width: 860px;
+	margin: 0 auto;
+}
+
+.zzz-extensions .zzz-grid.col-3 {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	gap: 30px;
+}
+
+.zzz-extensions .zzz-item-image-link {
+	display: block;
+	overflow: hidden;
+	margin-bottom: .5em;
+}
+
+.zzz-extensions .zzz-item-image {
+	transition: transform .35s ease-out;
+	will-change: transform;
+}
+
+.zzz-extensions .zzz-item-title {
+	margin-bottom: .25em;
+}
+
+.zzz-extensions .zzz-item-movie-title {
+	padding: .25em;
+	border: 1px dashed #000;
+	font-size: 15px;
+	font-family: monospace;
+}
+
+.zzz-extensions .zzz-grid-item:hover .zzz-item-image {
+	transform: scale(1.02);
+}
