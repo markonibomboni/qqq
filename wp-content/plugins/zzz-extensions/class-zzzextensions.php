@@ -67,14 +67,17 @@ if ( ! class_exists( 'ZZZExtensions' ) ) {
 		}
 
 		function enqueue_gutenberg_assets() {
-			wp_enqueue_script( 'zzz-extensions-block-js', plugin_dir_url( __FILE__ ) . 'assets/zzz-extensions-block.js', array( 'wp-blocks', 'wp-block-editor'), true );
+			wp_enqueue_script( 'zzz-extensions-block-js', plugin_dir_url( __FILE__ ) . 'assets/zzz-extensions-block.js', array(
+				'wp-blocks',
+				'wp-block-editor'
+			), true );
 		}
 
 		function enqueue_gutenberg_functions() {
-			register_block_type('zzz-extensions/favorite-movie-quote', array(
-					'editor_script' => 'serverside',
+			register_block_type( 'zzz-extensions/favorite-movie-quote', array(
+					'editor_script'   => 'serverside',
 					'render_callback' => 'zzz_favorite_movie_quote_render_callback',
-					'attributes' => array(
+					'attributes'      => array(
 						'images' => array(
 							'type' => 'array'
 						)
@@ -199,82 +202,82 @@ if ( ! class_exists( 'ZZZExtensions' ) ) {
 							<pre style="max-width: 680px; max-height: 320px; background-color: #ccc; overflow: scroll;"><?php echo $response; ?></pre>
 							<?php
 						}
-					}
-					?>
-
-					<h1>Login</h1>
-					<p>Login a user from saved credentials.</p>
-					<form action="" method="post">
-						<p class="submit">
-							<input type="submit" name="zzzLoginUser" class="button button-primary"
-							       value="Login"/>
-						</p>
-					</form>
-
-					<?php if ( isset( $_POST['zzzLoginUser'] ) ) {
-						// set post fields
-						$post = array(
-							'email'    => $zzz_user,
-							'password' => $zzz_pass,
-						);
-
-						$ch = curl_init();
-
-						curl_setopt( $ch, CURLOPT_URL, 'https://symfony-skeleton.q-tests.com/api/v2/token' );
-						curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
-						curl_setopt( $ch, CURLOPT_POST, 1 );
-						curl_setopt( $ch, CURLOPT_POSTFIELDS, json_encode( $post ) );
-
-						// local SSL remove
-						curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, 0 );
-						curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, 0 );
-
-						$headers   = array();
-						$headers[] = 'Accept: application/json';
-						$headers[] = 'Content-Type: application/json';
-						curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers );
-
-						// execute!
-						$response = curl_exec( $ch );
-
-						// show errors
-						if ( curl_errno( $ch ) ) {
-							$response = curl_error( $ch );
-						}
-
-						// close the connection, release resources used
-						curl_close( $ch );
 						?>
-						<?php
-						if ( isset( $response ) && ! empty( $response ) ) { ?>
-							<h1>Token Key</h1>
+
+						<h1>Login</h1>
+						<p>Login a user from saved credentials.</p>
+						<form action="" method="post">
+							<p class="submit">
+								<input type="submit" name="zzzLoginUser" class="button button-primary"
+								       value="Login"/>
+							</p>
+						</form>
+
+						<?php if ( isset( $_POST['zzzLoginUser'] ) ) {
+							// set post fields
+							$post = array(
+								'email'    => $zzz_user,
+								'password' => $zzz_pass,
+							);
+
+							$ch = curl_init();
+
+							curl_setopt( $ch, CURLOPT_URL, 'https://symfony-skeleton.q-tests.com/api/v2/token' );
+							curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
+							curl_setopt( $ch, CURLOPT_POST, 1 );
+							curl_setopt( $ch, CURLOPT_POSTFIELDS, json_encode( $post ) );
+
+							// local SSL remove
+							curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, 0 );
+							curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, 0 );
+
+							$headers   = array();
+							$headers[] = 'Accept: application/json';
+							$headers[] = 'Content-Type: application/json';
+							curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers );
+
+							// execute!
+							$response = curl_exec( $ch );
+
+							// show errors
+							if ( curl_errno( $ch ) ) {
+								$response = curl_error( $ch );
+							}
+
+							// close the connection, release resources used
+							curl_close( $ch );
+							?>
 							<?php
-							$decoded = @json_decode( $response, true );
-							if ( isset( $decoded['token_key'] ) && ! empty( $decoded['token_key'] ) ) { ?>
-								<pre><?php echo $decoded['token_key']; ?></pre>
-								<form action="" method="post">
-									<p class="submit">
-										<input type="submit" name="zzzSaveStorage" class="button button-primary"
-										       value="Save to Session Storage"
-										       onClick="sessionStorage.setItem('zzzTokenObject', JSON.stringify( { expiresAt: '<?php echo date( 'D M d Y H:i:s O' ) ?>', tokenKey: '<?php echo $decoded['token_key'] ?>' } ))"/>
-										<input type="submit" name="zzzSaveStorage" class="button button-primary"
-										       value="Save to Local Storage"
-										       onClick="localStorage.setItem('zzzTokenObject', JSON.stringify( { expiresAt: '<?php echo date( 'D M d Y H:i:s O' ) ?>', tokenKey: '<?php echo $decoded['token_key'] ?>' } ))"/>
-									</p>
-								</form>
+							if ( isset( $response ) && ! empty( $response ) ) { ?>
+								<h1>Token Key</h1>
+								<?php
+								$decoded = @json_decode( $response, true );
+								if ( isset( $decoded['token_key'] ) && ! empty( $decoded['token_key'] ) ) { ?>
+									<pre><?php echo $decoded['token_key']; ?></pre>
+									<form action="" method="post">
+										<p class="submit">
+											<input type="submit" name="zzzSaveStorage" class="button button-primary"
+											       value="Save to Session Storage"
+											       onClick="sessionStorage.setItem('zzzTokenObject', JSON.stringify( { expiresAt: '<?php echo date( 'D M d Y H:i:s O' ) ?>', tokenKey: '<?php echo $decoded['token_key'] ?>' } ))"/>
+											<input type="submit" name="zzzSaveStorage" class="button button-primary"
+											       value="Save to Local Storage"
+											       onClick="localStorage.setItem('zzzTokenObject', JSON.stringify( { expiresAt: '<?php echo date( 'D M d Y H:i:s O' ) ?>', tokenKey: '<?php echo $decoded['token_key'] ?>' } ))"/>
+										</p>
+									</form>
+								<?php } ?>
 							<?php } ?>
-						<?php } ?>
 
-						<h1>Response</h1>
-						<pre style="max-width: 680px; max-height: 320px; background-color: #ccc; overflow: scroll;"><?php echo $response; ?></pre>
-						<?php
-					}
-					?>
+							<h1>Response</h1>
+							<pre style="max-width: 680px; max-height: 320px; background-color: #ccc; overflow: scroll;"><?php echo $response; ?></pre>
+							<?php
+						}
+						?>
 
-					<?php if ( isset( $_POST['zzzSaveStorage'] ) ) { ?>
-						<h1>Token Key</h1>
-						<p>Token successfully saved to storage.</p>
-						<?php
+						<?php if ( isset( $_POST['zzzSaveStorage'] ) ) { ?>
+							<h1>Token Key</h1>
+							<p>Token successfully saved to storage.</p>
+							<?php
+						}
 					}
 					?>
 				</div>
